@@ -1,0 +1,26 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmname":{
+            "value": "LHCAADCon01"
+        },
+        "vnetname":{
+            "value": "Prod-ADDS-EastCoast-Mgmt"
+        },
+        "rgname":{
+            "value": "LhcADDSRG"
+        },
+        "location":{
+            "value": "eastus2"
+        },
+        "adminusername":{
+            "value": "aadcadmin"
+        },
+       
+       "snetname":{
+           "value": "AD"
+       }
+    }
+}
