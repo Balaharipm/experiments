@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\sample-blazor-pwa.props" />
+</Project>

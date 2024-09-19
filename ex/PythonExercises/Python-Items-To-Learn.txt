@@ -1,0 +1,7 @@
+1. Virtual Environment setup. How to switch between environments. Practice to change environments seemlessly.
+2. Arrays, 2D, 3D arrays traversals.
+3. Slicing
+4. OOP concepts in Python
+5. Libraries
+6. Communicate to people - Make sure to write emails and discuss in standup.
+ 
