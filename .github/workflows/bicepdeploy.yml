@@ -14,7 +14,8 @@ on:
           - qademo
           - "hltv-dev"
           - "phs-stg"
-          - "phs-prod"  
+          - "phs-prod"
+          - "tst-security"
       serviceidentifier:
         description: "service identifier. example to create phs-stg-aiagent, serviceidentifier is aiagent"
         type: string
@@ -25,7 +26,7 @@ on:
         required: true
 jobs:
   create-param-json:
-    runs-on: ubuntu-${{inputs.environment}}
+    runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
     steps:
 
