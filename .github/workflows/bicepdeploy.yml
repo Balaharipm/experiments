@@ -102,14 +102,18 @@ jobs:
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
-
+    - name: Check Environment Variables
+      run: |
+        echo "AZURE_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}"
+        echo "LOCATION: ${{ env.LOCATION }}"
+        echo "RESOURCEGROUP: ${{ env.RESOURCEGROUP }}"
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v2
       with:
-        subscriptionId: ${{ github.env.AZURE_SUBSCRIPTION_ID }}
+        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
         scope: resourcegroup
-        region: ${{github.env.LOCATION}}
-        resourceGroupName: ${{github.env.RESOURCEGROUP}}
+        region: ${{env.LOCATION}}
+        resourceGroupName: ${{env.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
         parameters: $(<param.json)      
         failOnStdErr: false
