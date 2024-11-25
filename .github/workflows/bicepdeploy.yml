@@ -101,10 +101,7 @@ jobs:
     - name: Log into Azure
       uses: azure/login@v1
       with:
-        client-id: ${{secrets.CLIENT_ID}}
-        client-secret: ${{secrets.AZURE_CLIENT_SECRET}}
-        subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-        tenant-id: ${{secrets.TENANT_ID}}
+        creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
 
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v1
