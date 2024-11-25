@@ -62,12 +62,12 @@ jobs:
           $paramHashtable[$param] = @{ value = $envValue }
         }
         # Add workflow inputs explicitly
-        $paramHashtable['fnapp'] = @{ value = ${{ inputs.serviceidentifier }}}
+        $paramHashtable['fnapp'] = @{ value = '${{ inputs.serviceidentifier }}'}
         $fnappmapvalue = ${{ inputs.fnappmap }}
         Write-Output $fnappmapvalue
         $paramHashtable['fnappmap'] = @{ value = $fnappmapvalue }
-        $paramHashtable['createdbyemail'] = @{ value = ${{ github.actor }} }
-        $paramHashtable['createddate'] = @{ value = ${{ steps.date.outputs.date }} }
+        $paramHashtable['createdbyemail'] = @{ value = '${{ github.actor }}' }
+        $paramHashtable['createddate'] = @{ value = '${{ steps.date.outputs.date }}' }
 
         # Create the final JSON structure with schema and contentVersion
        $finalJson = @{
