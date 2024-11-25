@@ -65,7 +65,7 @@ jobs:
         $paramHashtable['fnapp'] = @{ value = ${{ inputs.serviceidentifier }}}
         $fnappmapvalue = ${{ inputs.fnappmap }}
         Write-Output $fnappmapvalue
-        $paramHashtable['fnappmap'] = @{ value = $fnappmap }
+        $paramHashtable['fnappmap'] = @{ value = $fnappmapvalue }
         $paramHashtable['createdbyemail'] = @{ value = ${{ github.actor }} }
         $paramHashtable['createddate'] = @{ value = ${{ steps.date.outputs.date }} }
 
