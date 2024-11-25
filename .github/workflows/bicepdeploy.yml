@@ -49,7 +49,7 @@ jobs:
           # Convert parameter name to uppercase to match environment variable naming convention
           $env_var_name=$param.ToUpper()
           # Check if the parameter is in GitHub environment
-          if ($env_var_name -and [Environment]::GetEnvironmentVariable($env_var_name))
+          if ($env_var_name -and [Environment]::GetEnvironmentVariable($env_var_name)){
           # Retrieve the value from the environment variable
           $envValue = {{ github.vars.$env_var_name }}
           }
