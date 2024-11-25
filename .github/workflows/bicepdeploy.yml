@@ -110,10 +110,10 @@ jobs:
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v2
       with:
-        subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+        subscriptionId: ${{ github.env.AZURE_SUBSCRIPTION_ID }}
         scope: resourcegroup
-        region: ${{env.LOCATION}}
-        resourceGroupName: ${{env.RESOURCEGROUP}}
+        region: ${{github.env.LOCATION}}
+        resourceGroupName: ${{github.env.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
         parameters: $(<param.json)      
         failOnStdErr: false
