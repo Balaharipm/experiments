@@ -103,11 +103,9 @@ jobs:
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
-    - name: Check Environment Variables
-      run: |
-        echo "AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}"
-        echo "LOCATION: ${{ vars.LOCATION }}"
-        echo "RESOURCEGROUP: ${{ vars.RESOURCEGROUP }}"
+    - name: Check param file
+      run: cat param.json
+
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v2
       with:
@@ -115,5 +113,5 @@ jobs:
         region: ${{vars.LOCATION}}
         resourceGroupName: ${{vars.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
-        parameters: $(<param.json)      
+        parameters: @param.json    
         failOnStdErr: false
