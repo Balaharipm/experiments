@@ -107,7 +107,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ github.env.AZURE_SUBSCRIPTION_ID }}
-        scope: subscription
+        scope: resourcegroup
         region: eastus
         template: ${{ inputs.bicepfile }}
         parameters: $(<param.json)      
