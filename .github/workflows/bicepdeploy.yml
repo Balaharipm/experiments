@@ -1,0 +1,111 @@
+name: Deploy Bicep file
+on: 
+  workflow_dispatch:
+    inputs:
+      bicepfile:
+        description: 'bicep file to deploy'
+        type: string
+      environment:
+        description: 'dev,qa,qademo,hltvdev,phsstg,phsprod'
+        type: choice
+        options:
+          - dev
+          - qa
+          - qademo
+          - "hltv-dev"
+          - "phs-stg"
+          - "phs-prod"  
+      serviceidentifier:
+        description: "service identifier. example to create phs-stg-aiagent, serviceidentifier is aiagent"
+        type: string
+        required: true
+      fnappmap:
+        description: "function app map with this format   signalr:{\"LinuxFxVersion\":\"DOTNET|5\",\"WindowsFxVersion\":null,\"kind\":\"functionapp,linux\",\"Description\":\"An Azure function written in C# that uses SignalR Service to send real-time updates to the client.\"}"
+        type: string
+        required: true
+jobs:
+  create-param-json:
+    runs-on: ubuntu-${{inputs.environment}}
+    environment: ${{inputs.environment}}
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Get the required parameters from bicep file
+      shell: pwsh
+      run: |
+       $params = Get-Content ${{ inputs.bicepfile }} | Select-String -Pattern '^param\s+(\w+)' | ForEach-Object { $_.Matches.Groups[1].Value }
+       # Initialize a hashtable to store parameters
+       $paramHashtable = @{}
+       # Loop through each parameter and map it to a GitHub environment variable
+       foreach ($param in $params){
+          # Check if the parameter is in GitHub environment
+          if (Test-Path env:$env_var_name) {
+          # Convert parameter name to uppercase to match environment variable naming convention
+          $env_var_name=$param.ToUpper()
+          
+          # Retrieve the value from the environment variable
+          $envValue = {{ github.env.$env_var_name }}
+          }
+          else {
+          # Use the input variable if the environment variable is not found
+          $envValue = "PLACEHOLDER_$param"
+          }
+          
+          # Add the parameter and its value to the hashtable
+          $paramHashtable[$param] = @{ value = $envValue }
+        }
+        # Add workflow inputs explicitly
+        $paramHashtable['fnapp'] = @{ value = ${{ inputs.serviceidentifier }}}
+        $paramHashtable['fnappmap'] = @{ value = ${{ inputs.fnappmap }} }
+        $paramHashtable['createdbyemail'] = @{ value = ${{ github.actor }} }
+        $paramHashtable['createddate'] = @{ value = ${{ steps.date.outputs.date }} }
+
+        # Create the final JSON structure with schema and contentVersion
+       $finalJson = @{
+       '$schema'        = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
+       'contentVersion' = '1.0.0.0'
+       'parameters'     = $paramHashtable
+        }
+       # Convert the hashtable to JSON and write it to a file
+       $paramJson = $finalJson | ConvertTo-Json -Depth 3
+       Set-Content -Path "param.json" -Value $paramJson
+
+    - name: Upload the param.json file
+      uses: actions/upload-artifact@v2
+      with:
+        path: param.json
+        name: param.json
+
+  deploy:
+    runs-on: ubuntu-${{inputs.environment}}
+    environment: ${{inputs.environment}}
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Download the param.json file
+      uses: actions/download-artifact@v2
+      with:
+        name: param.json
+
+    - name: Log into Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Bicep file
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ github.env.AZURE_SUBSCRIPTION_ID }}
+        scope: subscription
+        region: eastus
+        template: ${{ inputs.bicepfile }}
+        parameters: $(<param.json)      
+        failOnStdErr: false
