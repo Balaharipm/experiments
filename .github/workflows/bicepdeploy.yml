@@ -12,10 +12,10 @@ on:
           - dev
           - qa
           - qademo
-          - "hltv-dev"
-          - "phs-stg"
-          - "phs-prod"
-          - "tst-security"
+          - hltv-dev
+          - phs-stg
+          - phs-prod
+          - tst-security
       serviceidentifier:
         description: "service identifier. example to create phs-stg-aiagent, serviceidentifier is aiagent"
         type: string
