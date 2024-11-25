@@ -108,7 +108,8 @@ jobs:
       with:
         subscriptionId: ${{ github.env.AZURE_SUBSCRIPTION_ID }}
         scope: resourcegroup
-        region: eastus
+        region: ${{github.env.LOCATION}}
+        resourcegroup: ${{githun.env.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
         parameters: $(<param.json)      
         failOnStdErr: false
