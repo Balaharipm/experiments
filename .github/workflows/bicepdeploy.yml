@@ -84,7 +84,7 @@ jobs:
         name: param.json
 
   deploy:
-    runs-on: ubuntu-${{inputs.environment}}
+    runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
     steps:
 
