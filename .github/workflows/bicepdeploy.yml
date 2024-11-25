@@ -45,13 +45,13 @@ jobs:
        $paramHashtable = @{}
        # Loop through each parameter and map it to a GitHub environment variable
        foreach ($param in $params){
-          # Check if the parameter is in GitHub environment
-          if (Test-Path env:$env_var_name) {
+        
           # Convert parameter name to uppercase to match environment variable naming convention
           $env_var_name=$param.ToUpper()
-          
+          # Check if the parameter is in GitHub environment
+          if ($env_var_name -and [Environment]::GetEnvironmentVariable($env_var_name))
           # Retrieve the value from the environment variable
-          $envValue = {{ github.env.$env_var_name }}
+          $envValue = {{ github.vars.$env_var_name }}
           }
           else {
           # Use the input variable if the environment variable is not found
@@ -105,9 +105,9 @@ jobs:
         creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
     - name: Check Environment Variables
       run: |
-        echo "AZURE_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}"
-        echo "LOCATION: ${{ env.LOCATION }}"
-        echo "RESOURCEGROUP: ${{ env.RESOURCEGROUP }}"
+        echo "AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}"
+        echo "LOCATION: ${{ vars.LOCATION }}"
+        echo "RESOURCEGROUP: ${{ vars.RESOURCEGROUP }}"
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v2
       with:
