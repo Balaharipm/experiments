@@ -63,7 +63,9 @@ jobs:
         }
         # Add workflow inputs explicitly
         $paramHashtable['fnapp'] = @{ value = ${{ inputs.serviceidentifier }}}
-        $paramHashtable['fnappmap'] = @{ value = ${{ inputs.fnappmap }} }
+        $fnappmapvalue = ${{ inputs.fnappmap }}
+        Write-Output $fnappmapvalue
+        $paramHashtable['fnappmap'] = @{ value = $fnappmap }
         $paramHashtable['createdbyemail'] = @{ value = ${{ github.actor }} }
         $paramHashtable['createddate'] = @{ value = ${{ steps.date.outputs.date }} }
 
