@@ -112,8 +112,8 @@ jobs:
       uses: azure/arm-deploy@v2
       with:
         scope: resourcegroup
-        region: ${{github.env.LOCATION}}
-        resourceGroupName: ${{github.env.RESOURCEGROUP}}
+        region: ${{vars.LOCATION}}
+        resourceGroupName: ${{vars.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
         parameters: $(<param.json)      
         failOnStdErr: false
