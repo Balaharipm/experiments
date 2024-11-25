@@ -78,7 +78,7 @@ jobs:
        Set-Content -Path "param.json" -Value $paramJson
 
     - name: Upload the param.json file
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: param.json
         name: param.json
@@ -92,7 +92,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: Download the param.json file
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: param.json
 
