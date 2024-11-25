@@ -113,5 +113,5 @@ jobs:
         region: ${{vars.LOCATION}}
         resourceGroupName: ${{vars.RESOURCEGROUP}}
         template: ${{ inputs.bicepfile }}
-        parameters: @param.json    
+        parameters: param.json    
         failOnStdErr: false
