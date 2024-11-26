@@ -62,7 +62,7 @@ jobs:
           $paramHashtable[$param] = @{ value = $envValue }
         }
         # Add workflow inputs explicitly
-        $paramHashtable['fnapps'] = @{ value = '["${{ inputs.serviceidentifier }}"]'; type= 'Array'}
+        $paramHashtable['fnapps'] = @{ value = ${{inputs.serviceidentifier}} }
         $fnappmapvalue = ${{ inputs.fnappmap }}
         Write-Output $fnappmapvalue
         Write-Output ${{inputs.environment}}
