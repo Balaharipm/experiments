@@ -89,6 +89,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{inputs.environment}}
+    needs: create-param-json
     steps:
 
     - name: Checkout code
